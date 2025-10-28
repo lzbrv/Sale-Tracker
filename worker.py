@@ -69,22 +69,34 @@ def check_item(session,item):
             item.status="error"
             schedule_next(item)
             return
+        
         #should check if data is none
-        price = data["price"]
-        name = data["name"]
-        in_stock = data["in_stock"]
+
+        price = data.get("price")
+        name = data.get("name")
+        in_stock = data.get("in_stock")
+
         if (not item.name and name):
             item.name = name
+
         if (name and item.name and item.name!=name):
             item.status="changed"
         else:
             item.status="ok"
+
         if (price is not None):
-            item.current_price=float(price)
+            try:
+                item.current_price=float(price)
+            except (ValueError, TypeError):
+                item.current_price=None
+
         previousPrice = get_previous_price(session,item.id)
-        if (previousPrice and price and 100*((previousPrice-price)/previousPrice)>=0.1 and 
+        
+        if (previousPrice and price and previousPrice > 0 and 100*((previousPrice-price)/previousPrice)>=10 and 
             all([item.name, item.current_price, item.url, previousPrice]) and item.status!="changed"):
-            send_email(item.name,item.current_price,float(previousPrice),item.url)
+
+            send_email(item.name,price,float(previousPrice),item.url)
+
         record_price_history(session,item,price,bool(in_stock))
         schedule_next(item)
 
