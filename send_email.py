@@ -3,7 +3,6 @@ import smtplib
 from email.message import EmailMessage
 from dotenv import load_dotenv
 
-from database import engine,SessionLocal
 
 load_dotenv()
 SMTP_HOST=os.getenv("SMTP_HOST","smtp.gmail.com")
@@ -20,7 +19,7 @@ def send_email(name,price,previousPrice,url):
     msg = EmailMessage()
     msg["From"]=FROM_ADDR
     msg["To"]=TO_ADDR
-    msg["Subject"] = "Notification from Sale Tracker!"
+    #msg["Subject"] = "Notification from Sale Tracker!"
     # msg.set_content(
     #     f"{name} dropped from ${previousPrice:.2f} to ${price:.2f}!\n"
     #     f"Link: {url}"
@@ -41,13 +40,3 @@ def send_email(name,price,previousPrice,url):
         s.login(SMTP_USER,SMTP_PASS)
         s.send_message(msg)
 
-if __name__ == "__main__":
-    # quick local test
-    send_email(
-        name="OUR LEGACY Third Cut Jeans",
-        price=149.00,
-        previousPrice=180.00,
-        url="https://example.com/product"
-    
-    )
-    print("Email sent.")

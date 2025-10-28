@@ -25,7 +25,7 @@ class Item(Base):
     
 class PriceHistory(Base):
     __tablename__="price_history"
-    id=Column(Integer,primary_key=True,autoIncrement=True)
+    id=Column(Integer,primary_key=True,autoincrement=True)
     item_id=Column(Integer,ForeignKey("items.id"),nullable=False)
     price=Column(Float,nullable=True)
     in_stock=Column(Boolean,nullable=True)
