@@ -14,7 +14,7 @@ class Item(Base):
     name=Column(Text,nullable=True)
     current_price=Column(Float,nullable=True)
     check_every_minutes=Column(Integer,nullable=False,server_default=text("60"))
-    next_check_at=Column(DateTime,nullable=False)
+    next_check_at=Column(DateTime,nullable=True)
     status=Column(Text,nullable=False,server_default=text("'new'"))
     created_at=Column(DateTime,nullable=False,server_default=text("CURRENT_TIMESTAMP"))
     updated_at=Column(DateTime,nullable=False,server_default=text("CURRENT_TIMESTAMP"),server_onupdate=text("CURRENT_TIMESTAMP"))

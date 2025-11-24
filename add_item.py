@@ -6,10 +6,10 @@ from models import Item
 
 #usage: python add_item.py "https://www.ssense.com/en-us/men/product/..."
 def main():
-    if len(sys.argv)!=1:
+    if len(sys.argv)!=2:
         print("Usage: python add_item.py <ssense_url>")
         return
-    url = sys.argv[0]
+    url = sys.argv[1]
     with SessionLocal() as session:
         exists=session.query(Item).filter(Item.url==url).first()
         if exists:
@@ -17,7 +17,7 @@ def main():
             return
         item=Item(
             url=url,
-            site="ssesnse",
+            site="ssense",
             status="new",
             next_check_at=datetime.now(),
         )
@@ -25,5 +25,5 @@ def main():
         session.commit()
         print("Added item ID: ", item.id)
 
-if __name__=="__name__":
+if __name__=="__main__":
     main()
